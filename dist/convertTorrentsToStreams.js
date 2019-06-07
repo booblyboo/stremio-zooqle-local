@@ -9,6 +9,8 @@ var _magnetUri = _interopRequireDefault(require("magnet-uri"));
 
 var _torrentNameParser = _interopRequireDefault(require("torrent-name-parser"));
 
+var _internal = require("internal");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const MIN_SEEDERS = 0;
@@ -26,10 +28,11 @@ function isEligibleTorrent(torrent, torrentsByCategory) {
     languages = []
   } = torrent; // When languages are specified and there is no English, ignore the torrent
 
-  if (seeders < MIN_SEEDERS || languages.length && !languages.includes('EN')) {
+  if (seeders < MIN_SEEDERS) {
     return false;
   }
 
+  if (!_internal.config.onlyEnglish && languages.length && !languages.includes('EN')) return false;
   torrentsByCategory[category] = torrentsByCategory[category] || 0;
   torrentsByCategory[category]++;
   return torrentsByCategory[category] <= STREAMS_PER_CATEGORY;
