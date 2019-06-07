@@ -1,5 +1,6 @@
 import magnet from 'magnet-uri'
 import parseTorrentName from 'torrent-name-parser'
+import { config } from 'internal'
 
 
 const MIN_SEEDERS = 0
@@ -17,11 +18,12 @@ function isEligibleTorrent(torrent, torrentsByCategory) {
   let { category, seeders = 0, languages = [] } = torrent
 
   // When languages are specified and there is no English, ignore the torrent
-  if (seeders < MIN_SEEDERS || (
-    languages.length && !languages.includes('EN')
-  )) {
+  if (seeders < MIN_SEEDERS) {
     return false
   }
+
+  if ( !config.onlyEnglish && languages.length && !languages.includes('EN') )
+    return false
 
   torrentsByCategory[category] = torrentsByCategory[category] || 0
   torrentsByCategory[category]++
