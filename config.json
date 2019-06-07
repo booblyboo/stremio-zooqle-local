@@ -1,0 +1,17 @@
+{
+  "host": {
+    "title": "Show only English Results",
+    "type": "boolean",
+    "default": true
+  },
+  "username": {
+    "title": "Username",
+    "type": "string",
+    "default": ""
+  },
+  "password": {
+    "title": "Password",
+    "type": "string",
+    "default": ""
+  }
+}
