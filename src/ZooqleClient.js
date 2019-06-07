@@ -214,7 +214,7 @@ class ZooqleClient {
 
   async getShowTorrents(imdbId, season, episode) {
     if (!this._cache) {
-      return this._getMovieTorrents(imdbId, season, episode)
+      return this._getShowTorrents(imdbId, season, episode)
     }
 
     let cacheKey = `${CACHE_PREFIX}show:${imdbId}:${season}:${episode}`
