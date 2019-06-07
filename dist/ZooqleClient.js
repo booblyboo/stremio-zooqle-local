@@ -11,8 +11,6 @@ var _cheerio = _interopRequireDefault(require("cheerio"));
 
 var _cacheManager = _interopRequireDefault(require("cache-manager"));
 
-var _cacheManagerRedisStore = _interopRequireDefault(require("cache-manager-redis-store"));
-
 var _bottleneck = _interopRequireDefault(require("bottleneck"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -60,11 +58,6 @@ class ZooqleClient {
     if (cache === '1') {
       this._cache = _cacheManager.default.caching({
         store: 'memory'
-      });
-    } else if (cache && cache !== '0') {
-      this._cache = _cacheManager.default.caching({
-        store: _cacheManagerRedisStore.default,
-        url: cache
       });
     }
 
@@ -280,7 +273,7 @@ class ZooqleClient {
 
     return _asyncToGenerator(function* () {
       if (!_this8._cache) {
-        return _this8._getMovieTorrents(imdbId, season, episode);
+        return _this8._getShowTorrents(imdbId, season, episode);
       }
 
       let cacheKey = `${CACHE_PREFIX}show:${imdbId}:${season}:${episode}`;
