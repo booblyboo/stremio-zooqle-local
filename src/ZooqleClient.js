@@ -1,9 +1,7 @@
 import needle from 'needle'
 import cheerio from 'cheerio'
 import cacheManager from 'cache-manager'
-import redisStore from 'cache-manager-redis-store'
 import Bottleneck from 'bottleneck'
-
 
 const BASE_URL = 'https://zooqle.com'
 const CACHE_PREFIX = 'stremio_zooqle|'
@@ -15,7 +13,6 @@ const CACHE_TTLS = {
   getShowTorrents: 4 * 60 * 60, // 4 hours
   NO_RESULTS: 10 * 60, // 10 minutes
 }
-
 
 class ZooqleClient {
   constructor({ userName, password, userAgent, cache, proxy } = {}) {
@@ -30,16 +27,12 @@ class ZooqleClient {
 
     if (cache === '1') {
       this._cache = cacheManager.caching({ store: 'memory' })
-    } else if (cache && cache !== '0') {
-      this._cache = cacheManager.caching({
-        store: redisStore,
-        url: cache,
-      })
     }
 
     if (proxy) {
       this._proxy = proxy
     }
+
   }
 
   _extractTorrentsFromPage(body) {
@@ -95,6 +88,7 @@ class ZooqleClient {
         cookies: this._cookies,
         proxy: this._proxy,
       }
+
       let res = await needle(method, url, data, options)
 
       if (res.statusCode > 399) {
@@ -131,6 +125,7 @@ class ZooqleClient {
 
   async _getItemUrl(imdbId) {
     let searchUrl = `${BASE_URL}/search?q=${imdbId}`
+
     let res = await this._request(searchUrl)
 
     if (res.statusCode < 300) {
